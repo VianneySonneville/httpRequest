@@ -20,10 +20,10 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function get(string $url, array $params) {
+  public function get(string $url, array $params = []) {
       $curl = $this->http_curl_init($url);
 
-      return $this->exec($url);
+      return $this->exec($curl);
   }
 
   /**
@@ -32,13 +32,13 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function post(string $url, array $params) {
+  public function post(string $url, array $params  = []) {
     $curl = $this->http_curl_init($url, array(
       CURLOPT_POST => true,
       CURLOPT_POSTFIELDS => http_build_query($params)
     ));
 
-    return $this->exec($url);
+    return $this->exec($curl);
   }
 
   /**
@@ -47,7 +47,7 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function put(string $url, array $params) {
+  public function put(string $url, array $params  = []) {
     $curl = $this->http_curl_init($url, array(
       CURLOPT_CUSTOMREQUEST => "PUT",
       CURLOPT_POSTFIELDS => http_build_query($params)
@@ -71,12 +71,12 @@ class HttpRequest {
    * @description: HTTP-Request initialization
    * @param string $url
    * @param array $opts
-   * @return CurlHandle|false
    */
-  private function http_curl_init(string $url, array $opts) {
+  private function http_curl_init(string $url, array $opts = []) {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HEADER, 0);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json', "Accept:application/json"));
     curl_setopt($curl, CURLOPT_URL, $url);
 
     foreach ($opts as $key => $value) { curl_setopt($curl, $key, $value); }
@@ -89,7 +89,7 @@ class HttpRequest {
    * @param CurlHandle|false $url
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  private function exec(CurlHandle|false $curl) {
+  private function exec(\CurlHandle|false $curl) {
     $response = curl_exec($curl);
     curl_close($curl);
 
