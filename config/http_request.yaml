@@ -1,2 +1,6 @@
 http_request:
   path: "https://hypnosheaven.ovh/"
+  other: "test"
+  graph:
+    ending: "lol"
+    ending: "lol"
