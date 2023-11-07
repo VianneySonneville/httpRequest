@@ -1,0 +1,11 @@
+{
+  "name": "VianneySonneville/httpRequest",
+  "description": "http request composer package.",
+    "autoload": {
+        "psr-4": {
+            "VianneySonneville\\httpRequest\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
