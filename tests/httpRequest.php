@@ -8,4 +8,11 @@ use Http\Request\HttpRequest;
 $res = HttpRequest::getInstance()->get("/");
 // $res = { "status" => 200, "body" => { "id" => 1, "firstname" => "John", "lastName" => "Doe" } }
 echo $res->status; // return 200
+
+
+HttpRequest::getInstance()->get("/aaa", []);
+
+HttpRequest::getInstance()->put("/bbb", []);
+
+HttpRequest::getInstance()->post("/ccc", []);
 ?>

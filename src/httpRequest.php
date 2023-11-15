@@ -3,8 +3,8 @@ namespace Http\Request;
 
 class HttpRequest {
   private static $_instance;
-  public string $baseUrl = "";
-  public string $port = "";
+  private string $baseUrl = "";
+  private string $port = "";
 
   public function __construct() {
     try {
