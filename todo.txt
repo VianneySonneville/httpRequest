@@ -1,8 +1,10 @@
 TODO:
   class: 
-    http: make a class who do : get post put delet :: done
     middleware: make a middleware who do: check if authorized to send request
     headers_authentication: make a headers_authentication who do: Automated authenticated to send request
-    yaml: make a yaml who do : read te file for configuration 
 
+
+    -> sub class with middleware properties who call http requets? (override class with middle ware)
+
+    -> or http request can inject middleware reflexion ???
 
