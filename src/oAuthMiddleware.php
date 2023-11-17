@@ -34,7 +34,6 @@ class OAuthMiddleware {
   public function send(string $method, string $url, array $params) {
     $this->response = HttpRequest::getInstance()->$method($url, $params, $this->getOpts());
 
-    
     return $this;
   }
 
