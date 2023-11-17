@@ -2,10 +2,15 @@
 namespace Http\Request;
 
 class HttpRequest {
+
   private static $_instance;
   private string $baseUrl = "";
   private string $port = "";
 
+  /**
+   * @description: Constructor
+   * @return void
+   */
   public function __construct() {
     try {
       $configs = file_get_contents(__DIR__."/../config/http_request.json");
@@ -13,6 +18,10 @@ class HttpRequest {
     } catch (Exception $e) { echo $e->getMessages(); }
   }
 
+  /**
+   * @description: Singleton
+   * @return self
+   */
   public static function getInstance() {
     if (!self::$_instance) {
       self::$_instance = new self();
@@ -26,8 +35,8 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function get(string $url, array $params = []) {
-      $curl = $this->http_curl_init($url);
+  public function get(string $url, array $params = [], array $opts = []) {
+      $curl = $this->http_curl_init($url, $opts);
 
       return $this->exec($curl);
   }
@@ -82,7 +91,7 @@ class HttpRequest {
     $curl = \curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HEADER, 0);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json', "Accept:application/json"));
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array_merge(array('Content-Type:application/json', "Accept:application/json"), $opts));
     curl_setopt($curl, CURLOPT_URL, $this->host() . $url);
 
     foreach ($opts as $key => $value) { curl_setopt($curl, $key, $value); }
@@ -97,11 +106,20 @@ class HttpRequest {
    */
   private function exec(\CurlHandle|false $curl) {
     $response = curl_exec($curl);
+    $satus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
 
-    return json_decode($response);
+    return [
+      "status" => $satus,
+      "body" => json_decode($response)
+    ];
   }
 
+  /**
+   * @description: Configs initialization
+   * @param \stdClass $configs
+   * @return void
+   */
   private function configs(\stdClass $configs) {
     if (!empty($configs->http_request)) {
       if (!empty($configs->http_request->base_url)) { $this->baseUrl = $configs->http_request->base_url; }
