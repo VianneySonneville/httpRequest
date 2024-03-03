@@ -19,7 +19,7 @@ print_r($oauth);
 // echo (HttpRequest::getInstance() instanceof HttpRequest);
 
 // $res = HttpRequest::getInstance()->get("/");
-//  $res = { "status" => 200, "body" => { "id" => 1, "firstname" => "John", "lastName" => "Doe" } }
+// // $res = { "status" => 200, "body" => { "id" => 1, "firstname" => "John", "lastName" => "Doe" } }
 // echo $res->status; // return 200
 
 
