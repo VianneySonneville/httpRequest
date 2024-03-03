@@ -12,7 +12,7 @@ class OAuthMiddleware {
    * @description: Constructor
    * @return: void
    */
-  public function __construct(mixed $strategy) {
+  private function __construct(mixed $strategy) {
     $this->strategy = $strategy;
   }
 
@@ -32,9 +32,14 @@ class OAuthMiddleware {
    * @param: string $method, string $url, array $params
    * @return: self
    */
-  public function send(string $method, string $url, array $params) {
+  public function send(string $method, string $url, array $params, bool $first = true) {
     $this->response = HttpRequest::getInstance()->$method($url, $params, $this->getHeaders());
 
+    if $this->response->status == 200 && $first {
+      $this->strategy->refresh();
+      $this->send($method, $url, $params, false);
+    } 
+      
     return $this->response;
   }
 

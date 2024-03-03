@@ -2,5 +2,9 @@
   "http_request": {
     "base_url": "http://127.0.0.1",
     "port": "8000"
+  },
+  "oauth_middleware": {
+    "strategy": "bearer_token",
+    "refresh_token": "http://127.0.0.1/refresh_token"
   }
 }

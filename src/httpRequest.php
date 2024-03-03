@@ -11,7 +11,7 @@ class HttpRequest {
    * @description: Constructor
    * @return void
    */
-  public function __construct() {
+  private function __construct() {
     try {
       $configs = file_get_contents(__DIR__."/../config/http_request.json");
       $this->configs(json_decode($configs));
@@ -33,6 +33,7 @@ class HttpRequest {
    * @description: GET request
    * @param string $url
    * @param array $params
+   * @param array $headers
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
   public function get(string $url, array $params = [], array $headers = []) {
@@ -47,6 +48,7 @@ class HttpRequest {
    * @description: POST request
    * @param string $url
    * @param array $params
+   * @param array $headers
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
   public function post(string $url, array $params  = [], array $headers = []) {
@@ -63,6 +65,7 @@ class HttpRequest {
    * @description: PUT request
    * @param string $url
    * @param array $params
+   * @param array $headers
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
   public function put(string $url, array $params  = [], array $headers = []) {
@@ -78,6 +81,7 @@ class HttpRequest {
   /**
    * @description: DELETE request
    * @param string $url
+   * @param array $headers
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
   public function delete(string $url, array $headers = []) {
