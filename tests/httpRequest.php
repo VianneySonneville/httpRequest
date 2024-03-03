@@ -10,16 +10,16 @@ use Http\Request\OAuthMiddleware;
 use Http\Request\OAuth\BearerToken;
 
 $oauth = OAuthMiddleware::getInstance(new BearerToken(
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6I",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6I",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6I")
-)->send("get", "/", []);
+)->send("get", "/", ["foo" => "bar"]);
 
 print_r($oauth);
 
 // echo (HttpRequest::getInstance() instanceof HttpRequest);
 
 // $res = HttpRequest::getInstance()->get("/");
-// // $res = { "status" => 200, "body" => { "id" => 1, "firstname" => "John", "lastName" => "Doe" } }
+//  $res = { "status" => 200, "body" => { "id" => 1, "firstname" => "John", "lastName" => "Doe" } }
 // echo $res->status; // return 200
 
 

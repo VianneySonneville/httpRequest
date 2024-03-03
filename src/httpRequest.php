@@ -35,8 +35,10 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function get(string $url, array $params = [], array $opts = []) {
-      $curl = $this->http_curl_init($url, $opts);
+  public function get(string $url, array $params = [], array $headers = []) {
+      $curl = $this->http_curl_init($url, array(
+        CURLOPT_HTTPHEADER => array_merge(array('Content-Type:application/json', "Accept:application/json"), $headers)
+      ));
 
       return $this->exec($curl);
   }
@@ -47,9 +49,10 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function post(string $url, array $params  = []) {
+  public function post(string $url, array $params  = [], array $headers = []) {
     $curl = $this->http_curl_init($url, array(
       CURLOPT_POST => true,
+      CURLOPT_HTTPHEADER => array_merge(array('Content-Type:application/json', "Accept:application/json"), $headers),
       CURLOPT_POSTFIELDS => http_build_query($params)
     ));
 
@@ -62,9 +65,10 @@ class HttpRequest {
    * @param array $params
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function put(string $url, array $params  = []) {
+  public function put(string $url, array $params  = [], array $headers = []) {
     $curl = $this->http_curl_init($url, array(
       CURLOPT_CUSTOMREQUEST => "PUT",
+      CURLOPT_HTTPHEADER => array_merge(array('Content-Type:application/json', "Accept:application/json"), $headers),
       CURLOPT_POSTFIELDS => http_build_query($params)
     ));
 
@@ -76,8 +80,11 @@ class HttpRequest {
    * @param string $url
    * @return HTTP-Response body or an empty string if the request fails or is empty
    */
-  public function delete(string $url) {
-    $curl = this->http_curl_init($url, array(CURLOPT_CUSTOMREQUEST => "DELETE"));
+  public function delete(string $url, array $headers = []) {
+    $curl = this->http_curl_init($url, array(
+      CURLOPT_CUSTOMREQUEST => "DELETE",
+      CURLOPT_HTTPHEADER => array_merge(array('Content-Type:application/json', "Accept:application/json"), $headers)
+    ));
 
     return $this->exec($curl);
   }
@@ -91,7 +98,6 @@ class HttpRequest {
     $curl = \curl_init();
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HEADER, 0);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array_merge(array('Content-Type:application/json', "Accept:application/json"), $opts));
     curl_setopt($curl, CURLOPT_URL, $this->host() . $url);
 
     foreach ($opts as $key => $value) { curl_setopt($curl, $key, $value); }

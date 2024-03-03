@@ -1,5 +1,6 @@
 <?php
 namespace Http\Request;
+use Http\Request\OAuth\BearerToken;
 
 class OAuthMiddleware {
   private static $_instance;
@@ -32,22 +33,19 @@ class OAuthMiddleware {
    * @return: self
    */
   public function send(string $method, string $url, array $params) {
-    $this->response = HttpRequest::getInstance()->$method($url, $params, $this->getOpts());
+    $this->response = HttpRequest::getInstance()->$method($url, $params, $this->getHeaders());
 
-    return $this;
+    return $this->response;
   }
 
   /**
    * @description: Get the headers
    * @return: array
    */
-  private function getOpts() {
+  private function getHeaders() {
     if($this->strategy instanceof BearerToken){
       return [
-        'headers' => [
-          'Authorization' => 'Bearer '. $this->stategy->getAccessToken(),
-          'Content-Type' => 'application/json'
-        ]
+        "Authorization:Bearer " . $this->strategy->accessToken
       ];
     } 
 
