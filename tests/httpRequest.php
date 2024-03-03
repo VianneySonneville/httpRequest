@@ -14,8 +14,6 @@ $oauth = OAuthMiddleware::getInstance(new BearerToken(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6I")
 )->send("get", "/", ["foo" => "bar"]);
 
-print_r($oauth);
-
 // echo (HttpRequest::getInstance() instanceof HttpRequest);
 
 // $res = HttpRequest::getInstance()->get("/");
