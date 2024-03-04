@@ -1,6 +1,6 @@
 <?php
-namespace Http\Request;
-use Http\Request\OAuth\BearerToken;
+namespace HttpRequest;
+use HttpRequest\OAuth\BearerToken;
 
 class OAuthMiddleware {
   private static $_instance;
@@ -36,8 +36,7 @@ class OAuthMiddleware {
   public function send(string $method, string $url, array $params, bool $first = true) {
     $response = HttpRequest::getInstance()->$method($url, $params, $this->getHeaders());
 
-    if ($response["status"] == "200" && $first) {
-      // $this->strategy->refresh();
+    if ($response->status == "200" && $first) {
       $this->send($method, $url, $params, false);
     } 
       

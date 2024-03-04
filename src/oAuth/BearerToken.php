@@ -1,5 +1,5 @@
 <?php
-namespace Http\Request\OAuth;
+namespace HttpRequest\OAuth;
 
 class BearerToken {
   

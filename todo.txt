@@ -1,4 +1,0 @@
-TODO:
-  - cretae refresh function in bearer token, see url in http_request.json
-  - rsult to object php
-

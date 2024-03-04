@@ -1,5 +1,5 @@
 <?php
-namespace Http\Request;
+namespace HttpRequest;
 
 class HttpRequest {
 
@@ -119,9 +119,9 @@ class HttpRequest {
     $satus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
 
-    return [
+    return (Object) [
       "status" => $satus,
-      "body" => json_decode($response)
+      "data" => json_decode($response)
     ];
   }
 
