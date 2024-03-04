@@ -10,6 +10,10 @@ class BearerToken implements StrategyInterface {
   private string $url;
   public string $accessToken;
 
+  /**
+   * @description: Constructor
+   * @return void
+   */
   public function __construct(string $accessToken, string $refreshToken) {
     $configs = file_get_contents(__DIR__."/../../config/http_request.json");
     $this->configs(json_decode($configs));
@@ -17,12 +21,14 @@ class BearerToken implements StrategyInterface {
     $this->refreshToken = $refreshToken;
   }
 
+  /**
+   * @description: refresh token
+   * @return void
+   */
   public function refreshToken(): void {
     $response = HttpRequest::getInstance()->post("/".$this->url, [
       "refreshToken" => $this->refreshToken
     ]);
-
-    print_r($response);
 
     if ($response->status == 200) {
       $refreshToken = $response->data->refreshToken;
@@ -30,12 +36,21 @@ class BearerToken implements StrategyInterface {
     }
   }
 
+  /**
+   * @description: get headers to set bearer token
+   * @return array
+   */
   public function getHeaders(): array {
     return [
       "Authorization:Bearer " . $this->accessToken
     ];
   }
 
+  /**
+   * @description: configs initialization
+   * @param \stdClass $configs
+   * @return void
+   */
   private function configs(\stdClass $configs): void {
     if (!empty($configs->http_request)) {
       if (
