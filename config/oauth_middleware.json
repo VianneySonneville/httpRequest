@@ -1,5 +1,0 @@
-{
-  "oauth_middleware": {
-    "strategy": "bearer_token"
-  }
-}

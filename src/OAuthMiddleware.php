@@ -1,10 +1,11 @@
 <?php
 namespace HttpRequest;
 use HttpRequest\OAuth\BearerToken;
+use HttpRequest\OAuth\StrategyInterface;
 
 class OAuthMiddleware {
   private static $_instance;
-  private mixed $strategy;
+  private StrategyInterface $strategy;
   private String $urlRefresh;
 
   /**
@@ -12,8 +13,6 @@ class OAuthMiddleware {
    * @return: void
    */
   private function __construct(mixed $strategy) {
-    $configs = file_get_contents(__DIR__."/../config/http_request.json");
-    // $this->configs(json_decode($configs));
     $this->strategy = $strategy;
   }
 
@@ -21,7 +20,7 @@ class OAuthMiddleware {
    * @description: Singleton
    * @return: self
    */
-  public static function getInstance(mixed $strategy) {
+  public static function getInstance(StrategyInterface $strategy) {
     if (!self::$_instance) {
       self::$_instance = new self($strategy);
     }
@@ -34,9 +33,10 @@ class OAuthMiddleware {
    * @return: self
    */
   public function send(string $method, string $url, array $params, bool $first = true) {
-    $response = HttpRequest::getInstance()->$method($url, $params, $this->getHeaders());
+    $response = HttpRequest::getInstance()->$method($url, $params, $this->getHeadersFromStrategy());
 
     if ($response->status == "200" && $first) {
+      $this->strategy->refreshToken();
       $this->send($method, $url, $params, false);
     } 
       
@@ -47,13 +47,7 @@ class OAuthMiddleware {
    * @description: Get the headers
    * @return: array
    */
-  private function getHeaders() {
-    if($this->strategy instanceof BearerToken){
-      return [
-        "Authorization:Bearer " . $this->strategy->accessToken
-      ];
-    } 
-
-    return [];
+  private function getHeadersFromStrategy() {
+    return $this->strategy->getHeaders();
   }
 }

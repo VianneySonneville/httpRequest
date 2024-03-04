@@ -22,7 +22,7 @@ class HttpRequest {
    * @description: Singleton
    * @return self
    */
-  public static function getInstance() {
+  public static function getInstance(): self {
     if (!self::$_instance) {
       self::$_instance = new self();
     }
@@ -130,15 +130,14 @@ class HttpRequest {
    * @param \stdClass $configs
    * @return void
    */
-  private function configs(\stdClass $configs) {
+  private function configs(\stdClass $configs): void {
     if (!empty($configs->http_request)) {
       if (!empty($configs->http_request->base_url)) { $this->baseUrl = $configs->http_request->base_url; }
       if (!empty($configs->http_request->port)) { $this->port = $configs->http_request->port; }
     }
   }
   
-  private function host() {
+  private function host(): String {
     return $this->baseUrl . (empty($this->port) ? "" : ":".$this->port);
   }
 }
-?>

@@ -1,5 +1,5 @@
 {
-  "name": "VianneySonneville/httpRequest",
+  "name": "VianneySonneville/ttpRequest",
   "description": "http request composer package.",
     "autoload": {
         "psr-4": {
